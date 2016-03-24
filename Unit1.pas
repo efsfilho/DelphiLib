@@ -3,8 +3,6 @@ unit Unit1;
 interface
 
 uses
-  //Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  //Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls;
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls,ShellAPI;
 
@@ -40,8 +38,9 @@ var
 
 implementation
 
-  uses
-    uCopier, uThread;
+uses
+  uCopier, uThread;
+
 type
   TCopyEx = packed record
     Source: String[255];
@@ -58,8 +57,6 @@ const
 var
   abc : Integer;
   LThread : TThreadList;
-  foo : Thread;
-{*  Declaration's missing cancel button -- *}
 
 {$R *.dfm}
 
@@ -94,46 +91,14 @@ end;
 procedure TForm1.Button1Click(Sender: TObject);
 begin
 
-  foo.AddProcedure(ExibeTeste);
-  foo.AddProcedure(ExibeTeste);
-  foo.AddProcedure(ExibeTeste);
-  foo.StartProcedures(1000);
+//  foo.AddProcedure(ExibeTeste);
+//  foo.AddProcedure(ExibeTeste);
+//  foo.AddProcedure(ExibeTeste);
+//  foo.StartProcedures(1000);
 //  Label2.Caption := IntToStr(foo.idade);
 
-//  pb1.Min := 0;
-//  pb1.Max := 100;
-//  pb1.Position := 0;
+  Label2.Caption := FormatFileSize(DirSize('C:/Users/Eduardo/Desktop/teste',False));
 
-//  AddProcedure(ExibeTeste('asfddsaf'));
-
-//  AddProcedure(
-//  procedure
-//  begin
-////    foo := False;
-////    pb1.Min := 0;
-////    pb1.Max := 50;
-//    lbl1.Caption := '1';
-//    pb1.Position := 1;
-//    CopyFiles('C:\Users\Eduardo\Desktop\foo','C:\Users\Eduardo\Desktop\teste', pb1,10);
-//    Label2.Caption := 'fdf';
-//  end);
-
-//  AddProcedure(
-//  procedure
-//  begin
-//    Abort;
-//    Exit;
-//
-//    CopyFiles('C:\Users\Eduardo\Desktop\foo','C:\Users\Eduardo\Desktop\teste',pb1, 100);
-//    foo := True;
-//  end);
-//  AddProcedure(
-//  procedure
-//  begin
-////    Exit;
-//    CopyFiles('C:\Users\Eduardo\Desktop\foo','C:\Users\Eduardo\Desktop\teste',pb1, 100);
-//    foo := True;
-//  end);
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);

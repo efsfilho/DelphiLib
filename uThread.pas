@@ -23,8 +23,8 @@ type
 
 implementation
 var
-  ThreadInit: Boolean=False;
-  Queue: TQueue<TProc>;
+  ThreadInit : Boolean=False;
+  Queue      : TQueue<TProc>;
 
 procedure Thread.AddProcedure(const proc: TProc);
 begin

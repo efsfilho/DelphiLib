@@ -27,11 +27,10 @@ uses
   Unit1;
 
 var
-  ThreadAbort : Boolean=FALSE;
-  ThreadStack  : array of THandle;
-  iThread, maximo, tCount : Integer;
-  ponteiro: Pointer;
-  ThreadInit   : Boolean=False; // (True = Thread rodando)
+  ThreadAbort     : Boolean=FALSE;
+  ThreadStack     : array of THandle;
+  iThread, maximo : Integer;
+//  ThreadInit   : Boolean=False; // (True = Thread rodando)
 
 function FormatFileSize(Size: extended): string;
 {Credit P0ke}
@@ -235,7 +234,7 @@ begin
     procedure
     var
       FlTo, FlFrom         : TStringList;
-      TotalSize,FileLength, foo : Int64;
+      TotalSize,FileLength : Int64;
       Buffer: array[0..4096] of char;
       IFile,NumRead        : Integer;
       FromF, ToF           : file of byte;
@@ -257,15 +256,12 @@ begin
       for IFile := 0 to FlFrom.Count-1  do
       begin
         CreateDirForce(ExtractFilePath(FlTo[IFile]));
-
         AssignFile(FromF, FlFrom[IFile]);
         reset(FromF);
         AssignFile(ToF, FlTo[IFile]);
         rewrite(ToF);
-
         FindFirst(FlFrom[IFile], faAnyFile, SR);
         FileLength := (SR.FindData.nFileSizeHigh * MAXDWORD) + SR.FindData.nFileSizeLow;
-        Foo := TotalSize;
 
         with form1.pb1 do
         begin
@@ -299,9 +295,9 @@ end;
 
 procedure CopyFiles(fromD, toD:String);
 var
-  IDt : Integer;
+  IDt                  : Integer;
   FlTo, FlFrom         : TStringList;
-  TotalSize,FileLength, foo : Int64;
+  TotalSize,FileLength : Int64;
   Buffer: array[0..4096] of char;
   IFile,NumRead,i      : Integer;
   FromF, ToF           : file of byte;
@@ -326,7 +322,6 @@ begin
     rewrite(ToF);
     FindFirst(FlFrom[IFile], faAnyFile, SR);
     FileLength := (SR.FindData.nFileSizeHigh * MAXDWORD) + SR.FindData.nFileSizeLow;
-    Foo := TotalSize;
     with Form1.pb1 do
     begin
       Min := 0;
@@ -354,7 +349,7 @@ begin
     procedure
     var
       FlTo, FlFrom         : TStringList;
-      TotalSize,FileLength, foo : Int64;
+      TotalSize,FileLength, Part : Int64;
       Buffer: array[0..4096] of char;
       IFile,NumRead,i      : Integer;
       FromF, ToF           : file of byte;
@@ -382,7 +377,7 @@ begin
 
         FindFirst(FlFrom[IFile], faAnyFile, SR);
         FileLength := (SR.FindData.nFileSizeHigh * MAXDWORD) + SR.FindData.nFileSizeLow;
-        Foo := Round(TotalSize/Stp);
+        Part := Round(TotalSize/Stp);
 
         with form1.pb1 do
         begin
@@ -392,13 +387,13 @@ begin
             FileLength := FileLength - (NumRead);
             BlockWrite(ToF, Buffer[0], NumRead);
             i := i + NumRead;
-            if i >= foo  then
+            if i >= Part  then
             begin
               if Position < Stp then
               begin
                 StepIt;
               end;
-              foo := foo + Round(TotalSize/Stp)
+              Part := Part + Round(TotalSize/Stp)
             end;
           end;
 
@@ -421,10 +416,11 @@ begin
 end;
 
 procedure CopyFiles(fromD, toD:String; var bar: TProgressBar);
+// Atualiza a barra enviada por parametro
 var
   IDt : Integer;
   FlTo, FlFrom         : TStringList;
-  TotalSize,FileLength, foo : Int64;
+  TotalSize,FileLength : Int64;
   Buffer: array[0..4096] of char;
   IFile,NumRead,i      : Integer;
   FromF, ToF           : file of byte;
@@ -449,7 +445,6 @@ begin
     rewrite(ToF);
     FindFirst(FlFrom[IFile], faAnyFile, SR);
     FileLength := (SR.FindData.nFileSizeHigh * MAXDWORD) + SR.FindData.nFileSizeLow;
-    Foo := TotalSize;
     with bar do
     begin
       Min := 0;
@@ -469,13 +464,13 @@ end;
 
 procedure CopyFiles(fromD, toD:String; var bar: TProgressBar; Stp: Int64);
 var
-  IDt : Integer;
+  IDt                  : Integer;
   FlTo, FlFrom         : TStringList;
   TotalSize,FileLength : Int64;
   Buffer: array[0..4096] of char;
-//  Buffer: array[1..4095] of char;
-  foo,i                : Double;
-  IFile,NumRead        : Integer;
+//  Buffer: array[1..4096] of char;
+  Part, Chunk          : Double;
+  IFile, NumRead       : Integer;
   FromF, ToF           : file of byte;
   SR                   : TSearchRec;
 begin
@@ -488,10 +483,8 @@ begin
     MessageDlg('Houve um erro ao tentar copiar os arquivos necessários.', mtError, [mbOk], 0);
     Exit;
   end;
-  i := 0;
-  foo := round(TotalSize/Stp);
-//  bar.Position := 1;
-
+  Chunk := 0;
+  Part := round(TotalSize/Stp);
   FlTo.Text := AnsiReplaceStr(FlFrom.Text, fromD, toD);
   for IFile := 0 to FlFrom.Count-1  do
   begin
@@ -502,7 +495,6 @@ begin
     rewrite(ToF);
     FindFirst(FlFrom[IFile], faAnyFile, SR);
     FileLength := (SR.FindData.nFileSizeHigh * MAXDWORD) + SR.FindData.nFileSizeLow;
-
     with bar do
     begin
       while FileLength > 0 do
@@ -510,98 +502,22 @@ begin
         BlockRead(FromF, Buffer[0], SizeOf(Buffer), NumRead);
         FileLength := FileLength - (NumRead);
         BlockWrite(ToF, Buffer[0], NumRead);
-        i := i + NumRead;
-        if i >= foo  then
+        Chunk := Chunk + NumRead;
+        if Chunk >= Part  then
         begin
           if Position <= Stp then
           begin
 //            StepIt;
             Form1.lbl1.Caption := IntToStr(Position);
             Position := Position + 1;
-//            foo := foo + foo;
           end;
-          foo := foo + (TotalSize/Stp);
+          Part := Part + (TotalSize/Stp);
         end;
       end;
-
       CloseFile(FromF);
       CloseFile(ToF);
     end;
   end;
 end;
-
-//procedure AddProcedure(const proc: Tproc);
-//begin
-//  if ThreadInit then
-//    begin
-//      Queue.Enqueue(proc);
-//    end
-//  else
-//  begin
-//    ThreadInit := True;
-//    Queue := TQueue<Tproc>.Create;
-//    Queue.Enqueue(proc);
-//  end;
-//end;
-//
-//procedure ExecuteQueue(const qProc: Tproc);
-//var MyThread, foo: TThread;
-//begin
-//  MyThread := TThread.CreateAnonymousThread(qProc);
-//  MyThread.FreeOnTerminate := True;
-//  MyThread.Start;
-//  WatchThread(MyThread.Handle);
-//
-//  WaitForSingleObject(MyThread.Handle, INFINITE);
-//end;
-//
-//procedure StartProcedures(Interval:Integer);
-//var
-//  MyThread: TThread;
-//begin
-//  MyThread := TThread.CreateAnonymousThread(
-//  procedure
-//  begin
-//    tCount := 2;
-//    if not(Queue = nil) then
-//    begin
-//      try
-//        while Queue.Count > 0 do
-//        begin
-//          ExecuteQueue(Queue.Peek());
-//          Sleep(Interval);
-//          Queue.Extract;
-//          Queue.TrimExcess;
-//        end;
-//      finally
-//        Queue.Free;
-//        ThreadInit := False;
-//      end;
-//    end
-//  end);
-//  MyThread.FreeOnTerminate := True;
-//  MyThread.Start;
-//  WatchThread(MyThread.Handle);
-//end;
-//
-//procedure WatchThread(tId:Thandle);
-//var wThread : TThread;
-//begin
-//  wThread := TThread.CreateAnonymousThread(
-//  procedure
-//  var target : TThread;
-//  begin
-//    while ThreadInit do
-//    begin
-//    end;
-//    TerminateThread(tId, 0);
-//  end);
-//  wThread.Start;
-//end;
-//
-//procedure StopProcedures;
-//begin
-//  ThreadInit := False;
-//end;
 
 end.

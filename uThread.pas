@@ -14,7 +14,6 @@ type
     protected
     public
       procedure AddProcedure(const proc: TProc); overload;
-//      procedure AddProcedure(const proc: proced); overload;
       procedure ExecuteQueue(const qProc: TProc);
       procedure StartProcedures(Interval: Integer);
       procedure WatchThread(tId: THandle);
@@ -40,13 +39,8 @@ begin
   end;
 end;
 
-//procedure Thread.AddProcedure(const proc: proced);
-//begin
-//  proc;
-//end;
-
 procedure Thread.ExecuteQueue(const qProc: Tproc);
-var MyThread, foo: TThread;
+var MyThread: TThread;
 begin
   MyThread := TThread.CreateAnonymousThread(qProc);
   MyThread.FreeOnTerminate := True;

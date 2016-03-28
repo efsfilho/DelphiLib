@@ -34,36 +34,18 @@ type
 
 var
   Form1: TForm1;
-  flagB : Boolean = False;
 
 implementation
 
 uses
   uCopier, uThread;
 
-type
-  TCopyEx = packed record
-    Source: String[255];
-    Dest:   String[255];
-    Handle: THandle;
-  end;
-  PCopyEx = ^TCopyEx;
-
-const
-  CEXM_CANCEL    =  WM_USER + 1;
-  CEXM_CONTINUE  =  WM_USER + 2; // wParam: lopart, lParam: hipart
-  CEXM_MAXBYTES  =  WM_USER + 3; // wParam: lopart; lParam: hipart
-
-var
-  abc : Integer;
-  LThread : TThreadList;
-
 {$R *.dfm}
 
 
 function TForm1.Teste:Boolean;
 begin
-  ShowMessage('lsdkjhf');
+  ShowMessage('Messa  ');
 end;
 
 procedure TForm1.ExibeTeste;
@@ -95,7 +77,6 @@ begin
 //  foo.AddProcedure(ExibeTeste);
 //  foo.AddProcedure(ExibeTeste);
 //  foo.StartProcedures(1000);
-//  Label2.Caption := IntToStr(foo.idade);
 
   Label2.Caption := FormatFileSize(DirSize('C:/Users/Eduardo/Desktop/teste',False));
 

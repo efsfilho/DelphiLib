@@ -1,4 +1,4 @@
-unit uMySqlError;
+unit uSql;
 
 interface
   uses FireDAC.Stan.Error, System.SysUtils;
@@ -11,7 +11,7 @@ var
   Pos1, Pos2: Integer;
   eMsg: string;
 begin
-  eMessage := '-';
+  eMsg := '-';
   case erro.ErrorCode of
     1054: // Error: 1054 Unknown column '%s' in '%s'
     begin

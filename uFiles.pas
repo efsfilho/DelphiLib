@@ -2,11 +2,11 @@ unit uFiles;
 
 interface
 uses SysUtils;
-  procedure WriteToFile(tx, dir: string);
+  procedure WriteInFile(tx, dir: string);
 
 implementation
 
-procedure WriteToFile(tx, dir: string);
+procedure WriteInFile(tx, dir: string);
 var
   F:textfile;
 begin

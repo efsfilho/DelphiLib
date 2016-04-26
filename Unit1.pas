@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, ComCtrls,ShellAPI;
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls,ShellAPI,
+    COMObj, Winapi.MSXML; // XML
 
 type
   TForm1 = class(TForm)
@@ -38,7 +39,7 @@ var
 implementation
 
 uses
-  uCopier, uThread;
+  uCopier, uThread, uFiles;
 
 {$R *.dfm}
 
@@ -71,15 +72,33 @@ begin
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
+var
+  ohttp: IXMLHTTPRequest;
+  FResponseText, lUrl: string;
 begin
+
+  ohttp := CreateOleObject('MSXML2.XMLHTTP.3.0') as IXMLHTTPRequest;
+
+  try
+//    oXMLHTTP.open('OPEN', URL, False, FUserName, FPassword);
+
+    ohttp.setRequestHeader('Content-Type','text/xml');
+    ohttp.send(EmptyParam);
+
+
+//    // FResponseText contains the reply from your webdav server!!
+    FResponseText := Trim(ohttp.ResponseText);
+    WriteInFile(FResponseText, 'C:/Users/Eduardo/Desktop/page.html');
+  finally
+    ohttp := nil;
+  end;
+
 
 //  foo.AddProcedure(ExibeTeste);
 //  foo.AddProcedure(ExibeTeste);
 //  foo.AddProcedure(ExibeTeste);
 //  foo.StartProcedures(1000);
-
-  Label2.Caption := FormatFileSize(DirSize('C:/Users/Eduardo/Desktop/teste',False));
-
+//  Label2.Caption := FormatFileSize(DirSize('C:/Users/Eduardo/Desktop/teste',False));
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);

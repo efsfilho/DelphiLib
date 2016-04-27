@@ -4,7 +4,9 @@ uses
   Vcl.Forms,
   Unit1 in 'Unit1.pas' {Form1},
   uCopier in 'uCopier.pas',
-  uThread in 'uThread.pas';
+  uThread in 'uThread.pas',
+  uSql in 'uSql.pas',
+  uFiles in 'uFiles.pas';
 
 {$R *.res}
 

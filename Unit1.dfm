@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 353
-  ClientWidth = 670
+  ClientHeight = 392
+  ClientWidth = 709
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -77,6 +77,19 @@ object Form1: TForm1
     Caption = 'Form2'
     TabOrder = 4
     OnClick = Button2Click
+  end
+  object WebBrowser1: TWebBrowser
+    Left = 184
+    Top = 176
+    Width = 300
+    Height = 150
+    TabOrder = 5
+    ControlData = {
+      4C000000021F0000810F00000000000000000000000000000000000000000000
+      000000004C000000000000000000000001000000E0D057007335CF11AE690800
+      2B2E126208000000000000004C0000000114020000000000C000000000000046
+      8000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000100000000000000000000000000000000000000}
   end
   object OpenDialog1: TOpenDialog
     Left = 352

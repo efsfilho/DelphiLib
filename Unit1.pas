@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls,ShellAPI,
-    COMObj, Winapi.MSXML; // XML
+    COMObj, Winapi.MSXML, Vcl.Touch.Keyboard, Vcl.OleCtrls, SHDocVw; // XML
 
 type
   TForm1 = class(TForm)
@@ -19,6 +19,7 @@ type
     Label1: TLabel;
     Label2: TLabel;
     Button2: TButton;
+    WebBrowser1: TWebBrowser;
 
     procedure Edit1Click(Sender: TObject);
     procedure Edit2Click(Sender: TObject);
@@ -87,7 +88,7 @@ begin
 
 //    // FResponseText contains the reply from your webdav server!!
     FResponseText := Trim(ohttp.ResponseText);
-//    WriteInFile(FResponseText, 'C:/Users/Eduardo/Desktop/page.html');
+//    WriteInFile(Trim(ohttp.responseXML), 'C:/Users/Eduardo/Desktop/page.html');
   finally
     ohttp := nil;
   end;

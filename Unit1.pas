@@ -77,6 +77,7 @@ var
   ohttp: IXMLHTTPRequest;
   FResponseText, lUrl: string;
 begin
+
   // Not Working
   ohttp := CreateOleObject('MSXML2.XMLHTTP.3.0') as IXMLHTTPRequest;
   lUrl := 'https://geo.query.yahoo.com/v1/public/yql?yhlVer=2&yhlClient=rapid&yhlS=1184300006&yhlCT=2&yhlBTMS=1461615725039&yhlClientVer=3.18.3&yhlRnd=3w7YuS3NFxNDpoo1&yhlCompressed=3';

@@ -20,6 +20,8 @@ type
     Label2: TLabel;
     Button2: TButton;
     WebBrowser1: TWebBrowser;
+    Button3: TButton;
+    Button4: TButton;
 
     procedure Edit1Click(Sender: TObject);
     procedure Edit2Click(Sender: TObject);
@@ -28,6 +30,8 @@ type
     procedure ExibeTeste;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     function Teste:Boolean;
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -79,6 +83,7 @@ var
 begin
 
   // Not Working
+
   ohttp := CreateOleObject('MSXML2.XMLHTTP.3.0') as IXMLHTTPRequest;
   lUrl := 'https://geo.query.yahoo.com/v1/public/yql?yhlVer=2&yhlClient=rapid&yhlS=1184300006&yhlCT=2&yhlBTMS=1461615725039&yhlClientVer=3.18.3&yhlRnd=3w7YuS3NFxNDpoo1&yhlCompressed=3';
   try
@@ -106,6 +111,77 @@ procedure TForm1.Button2Click(Sender: TObject);
 begin
 //  ShowMessage(BoolToStr(flagB));
 
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  F, obj: TStringList;
+  dirF: string;
+begin
+  dirF := 'C:/Users/Eduardo/Desktop/teste.bin';
+
+  obj := obj.Create;
+  obj.Add('teste 1');
+
+  F := F.Create;
+
+//  if not FileExists(dirF) Then
+//    begin
+//      Assignfile(dirF,'');
+//      Rewrite(f);
+//    end
+//  else
+//  begin
+//    Append(F);
+//  end;
+//  Writeln(F,obj);
+//  Closefile(F);
+
+  // Try to open the Test.txt file for writing to
+  assignfile(dirF, 'C:/Users/Eduardo/Desktop/teste.bin');
+  ReWrite(myFile);
+
+  // Write a couple of well known words to this file
+  WriteLn(myFile, 'Hello');
+  WriteLn(myFile, 'World');
+
+  // Close the file
+  CloseFile(myFile);
+
+  // Reopen the file for reading
+  Reset(myFile);
+
+  // Display the file contents
+  while not Eof(myFile) do
+  begin
+    ReadLn(myFile, text);
+    ShowMessage(text);
+  end;
+
+  // Close the file for the last time
+  CloseFile(myFile);
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+var
+  sFile : file of TStringList;
+  obj   : TStringList;
+  dirF  : string;
+begin
+  dirF := '';
+  if FileExists('grid_principal.bin') then
+    begin
+      AssignFile(Arq_Principal, g_sExePath+ 'grid_principal.bin');
+      Reset(Arq_Principal);
+
+      if not Eof(Arq_Principal) then
+      begin
+        Read(Arq_Principal,Grid_Atual);
+      end;
+
+      CloseFile(Arq_Principal);
+
+    end;
 end;
 
 procedure TForm1.Edit1Click(Sender: TObject);
